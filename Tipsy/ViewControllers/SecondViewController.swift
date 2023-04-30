@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SecondViewController: UINavigationController {
+class SecondViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class SecondViewController: UINavigationController {
         return view
     }()
     
-    private let calculateButton: UIButton = {
+    private lazy var calculateButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(rgb: 0x00B06B)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -30,8 +30,13 @@ class SecondViewController: UINavigationController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         button.titleLabel?.font = .systemFont(ofSize: 35)
+        button.addTarget(self, action: #selector(backVc), for: .touchUpInside)
         return button
     }()
+    
+    @objc func backVc() {
+        self.dismiss(animated: true)
+    }
     
     private let totalPerPerson: UILabel = {
         let label = UILabel()
@@ -62,8 +67,6 @@ class SecondViewController: UINavigationController {
         return label
     }()
 
-
-
 }
 
 extension SecondViewController {
@@ -71,10 +74,10 @@ extension SecondViewController {
     func layout() {
         
         view.addSubview(greenView)
-        greenView.addSubview(calculateButton)
+        view.addSubview(discription)
+        view.addSubview(calculateButton)
         greenView.addSubview(totalPerPerson)
         greenView.addSubview(scoreLabel)
-        view.addSubview(discription)
         
         NSLayoutConstraint.activate([
             

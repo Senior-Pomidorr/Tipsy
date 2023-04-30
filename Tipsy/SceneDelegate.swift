@@ -16,7 +16,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         let viewController = MainViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.hidesBarsOnTap = true
         window!.rootViewController = navigationController
         window!.makeKeyAndVisible()
     }

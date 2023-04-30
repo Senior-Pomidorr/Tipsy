@@ -165,7 +165,6 @@ extension MainViewController {
             
             textField.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 30),
             textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            textField.heightAnchor.constraint(equalToConstant: 50),
             textField.bottomAnchor.constraint(equalTo: greenView.topAnchor, constant: -35),
             
             greenView.topAnchor.constraint(equalTo: view.topAnchor, constant: 220),
