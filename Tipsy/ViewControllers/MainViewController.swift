@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    private let calculateButton: UIButton = {
+    private lazy var calculateButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(rgb: 0x00B06B)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -30,8 +30,14 @@ class MainViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         button.titleLabel?.font = .systemFont(ofSize: 35)
+        button.addTarget(self, action: #selector(pushCalcuteButton), for: .touchUpInside)
         return button
     }()
+    
+    @objc func pushCalcuteButton() {
+        let secondVc = SecondViewController()
+        navigationController?.present(secondVc, animated: true)
+    }
     
     private let discription: UILabel = {
         let label = UILabel()
@@ -152,14 +158,15 @@ extension MainViewController {
         
         NSLayoutConstraint.activate([
             
-            discription.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            discription.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             discription.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
             discription.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
-            discription.heightAnchor.constraint(equalToConstant: 30),
+            discription.heightAnchor.constraint(equalToConstant: 20),
             
             textField.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 30),
             textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            textField.heightAnchor.constraint(equalToConstant: 48),
+//            textField.heightAnchor.constraint(equalToConstant: 50),
+            textField.bottomAnchor.constraint(equalTo: greenView.topAnchor, constant: -35),
             
             greenView.topAnchor.constraint(equalTo: view.topAnchor, constant: 220),
             greenView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
