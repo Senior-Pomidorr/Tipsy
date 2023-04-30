@@ -26,6 +26,10 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = UIColor(rgb: 0x00B06B)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Calculate", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 5
+        button.titleLabel?.font = .systemFont(ofSize: 35)
         return button
     }()
     
@@ -56,15 +60,25 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    private let chooseSplitLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 25)
+        label.textColor = .lightGray
+        label.text = "Choose Split"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .white
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.alignment = .center
+        stackView.spacing = 30
         return stackView
     }()
+    
     
     private let buttonOne: UIButton = {
         let button = UIButton()
@@ -81,6 +95,7 @@ class MainViewController: UIViewController {
         button.setTitle("10%", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 36)
+        button.layer.cornerRadius = 5
         button.backgroundColor = UIColor(rgb: 0x00B06B)
         return button
     }()
@@ -93,6 +108,30 @@ class MainViewController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 36)
         return button
     }()
+    
+    private let secondStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
+        return stackView
+    }()
+    
+    private let numberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "2"
+        label.textColor = UIColor(rgb: 0x00B06B)
+        label.font = .systemFont(ofSize: 35)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let stepper: UIStepper = {
+        let stepper = UIStepper()
+        stepper.translatesAutoresizingMaskIntoConstraints = false
+        return stepper
+    }()
 }
 
 extension MainViewController {
@@ -103,9 +142,13 @@ extension MainViewController {
         greenView.addSubview(calculateButton)
         greenView.addSubview(selectedTipLAbel)
         greenView.addSubview(stackView)
+        greenView.addSubview(secondStackView)
+        greenView.addSubview(chooseSplitLabel)
         stackView.addArrangedSubview(buttonOne)
         stackView.addArrangedSubview(buttonTwo)
         stackView.addArrangedSubview(buttonThree)
+        secondStackView.addArrangedSubview(numberLabel)
+        secondStackView.addArrangedSubview(stepper)
         
         NSLayoutConstraint.activate([
             
@@ -127,24 +170,37 @@ extension MainViewController {
             selectedTipLAbel.heightAnchor.constraint(equalToConstant: 30),
             selectedTipLAbel.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 50),
             
-            stackView.topAnchor.constraint(equalTo: selectedTipLAbel.bottomAnchor, constant: 20),
+            stackView.topAnchor.constraint(equalTo: selectedTipLAbel.bottomAnchor, constant: 18),
             stackView.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: greenView.trailingAnchor,  constant: -16),
-            stackView.heightAnchor.constraint(equalToConstant: 80),
+            stackView.heightAnchor.constraint(equalToConstant: 70),
+            
+            chooseSplitLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+            chooseSplitLabel.heightAnchor.constraint(equalToConstant: 30),
+            chooseSplitLabel.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 50),
+            
+            secondStackView.topAnchor.constraint(equalTo: chooseSplitLabel.bottomAnchor, constant: 18),
+            secondStackView.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 16),
+            secondStackView.trailingAnchor.constraint(equalTo: greenView.trailingAnchor,  constant: -16),
+            secondStackView.heightAnchor.constraint(equalToConstant: 70),
         
             calculateButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             calculateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             calculateButton.heightAnchor.constraint(equalToConstant: 54),
             calculateButton.widthAnchor.constraint(equalToConstant: 200)
-        
+            
         ])
         
         NSLayoutConstraint.activate([
             buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            buttonOne.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 10),
-            buttonThree.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10),
+            buttonTwo.widthAnchor.constraint(equalToConstant: 80),
+            buttonTwo.heightAnchor.constraint(equalToConstant: 40),
             ])
         
-        
+        NSLayoutConstraint.activate([
+            numberLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 110),
+            stepper.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -80),
+//            stepper.heightAnchor.constraint(equalToConstant: 40)
+            ])
     }
 }
