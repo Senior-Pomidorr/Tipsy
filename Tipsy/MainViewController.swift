@@ -38,13 +38,74 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    private let textField: UITextField = {
+        let text = UITextField()
+        text.placeholder = "e.g. 123.56"
+        text.font = .systemFont(ofSize: 40)
+        text.textColor = .lightGray
+        text.translatesAutoresizingMaskIntoConstraints = false
+        return text
+    }()
+    
+    private let selectedTipLAbel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 25)
+        label.textColor = .lightGray
+        label.text = "Select tip"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .white
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
+        return stackView
+    }()
+    
+    private let buttonOne: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("0%", for: .normal)
+        button.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 36)
+        return button
+    }()
+    
+    private let buttonTwo: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("10%", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 36)
+        button.backgroundColor = UIColor(rgb: 0x00B06B)
+        return button
+    }()
+    
+    private let buttonThree: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("20%", for: .normal)
+        button.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 36)
+        return button
+    }()
 }
 
 extension MainViewController {
     func layout() {
         view.addSubview(greenView)
         view.addSubview(discription)
+        view.addSubview(textField)
         greenView.addSubview(calculateButton)
+        greenView.addSubview(selectedTipLAbel)
+        greenView.addSubview(stackView)
+        stackView.addArrangedSubview(buttonOne)
+        stackView.addArrangedSubview(buttonTwo)
+        stackView.addArrangedSubview(buttonThree)
         
         NSLayoutConstraint.activate([
             
@@ -53,17 +114,37 @@ extension MainViewController {
             discription.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
             discription.heightAnchor.constraint(equalToConstant: 30),
             
+            textField.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 30),
+            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textField.heightAnchor.constraint(equalToConstant: 48),
+            
             greenView.topAnchor.constraint(equalTo: view.topAnchor, constant: 220),
             greenView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             greenView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             greenView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             
+            selectedTipLAbel.topAnchor.constraint(equalTo: greenView.topAnchor, constant: 20),
+            selectedTipLAbel.heightAnchor.constraint(equalToConstant: 30),
+            selectedTipLAbel.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 50),
+            
+            stackView.topAnchor.constraint(equalTo: selectedTipLAbel.bottomAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: greenView.trailingAnchor,  constant: -16),
+            stackView.heightAnchor.constraint(equalToConstant: 80),
+        
             calculateButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             calculateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             calculateButton.heightAnchor.constraint(equalToConstant: 54),
             calculateButton.widthAnchor.constraint(equalToConstant: 200)
         
         ])
+        
+        NSLayoutConstraint.activate([
+            buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            buttonOne.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 10),
+            buttonThree.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10),
+            ])
+        
         
     }
 }
