@@ -8,13 +8,16 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
+    var labelNumber = 0
+    var numberOfPeople = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         layout()
     }
-
+    
     private let greenView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(rgb: 0xD7F9EB)
@@ -53,6 +56,7 @@ class MainViewController: UIViewController {
         text.placeholder = "e.g. 123.56"
         text.font = .systemFont(ofSize: 40)
         text.textColor = .lightGray
+        text.textAlignment = .center
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
     }()
@@ -79,23 +83,26 @@ class MainViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.alignment = .center
         stackView.spacing = 30
         return stackView
     }()
     
     
-    private let buttonOne: UIButton = {
+    private lazy var buttonOne: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("0%", for: .normal)
-        button.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+        button.setTitleColor(Color.green, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 36)
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(buttonCalculate), for: .touchUpInside)
         return button
     }()
     
-    private let buttonTwo: UIButton = {
+    
+    private lazy var buttonTwo: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("10%", for: .normal)
@@ -103,17 +110,59 @@ class MainViewController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 36)
         button.layer.cornerRadius = 5
         button.backgroundColor = UIColor(rgb: 0x00B06B)
+        button.addTarget(self, action: #selector(buttonCalculate), for: .touchUpInside)
         return button
     }()
     
-    private let buttonThree: UIButton = {
+    private lazy var buttonThree: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("20%", for: .normal)
-        button.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+        button.setTitleColor(Color.green, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 36)
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(buttonCalculate), for: .touchUpInside)
         return button
     }()
+    
+    @objc func buttonCalculate(_ sender: UIButton) {
+            sender.isEnabled = false // Disable the clicked button
+           // Enable the other buttons
+        switch sender {
+        case buttonOne:
+            buttonTwo.isEnabled = true
+            buttonThree.isEnabled = true
+            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.setTitleColor(.white, for: .normal)
+            buttonTwo.backgroundColor = .clear
+            buttonTwo.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+            buttonThree.backgroundColor = .clear
+            buttonThree.setTitleColor(Color.green, for: .normal)
+            print("press button")
+        case buttonTwo:
+            buttonOne.isEnabled = true
+            buttonThree.isEnabled = true
+            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.setTitleColor(.white, for: .normal)
+            buttonOne.backgroundColor = .clear
+            buttonOne.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+            buttonThree.backgroundColor = .clear
+            buttonThree.setTitleColor(Color.green, for: .normal)
+            print("press button two")
+        case buttonThree:
+            buttonOne.isEnabled = true
+            buttonTwo.isEnabled = true
+            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.setTitleColor(.white, for: .normal)
+            buttonOne.backgroundColor = .clear
+            buttonOne.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
+            buttonTwo.backgroundColor = .clear
+            buttonTwo.setTitleColor(Color.green, for: .normal)
+            print("press button three")
+        default:
+            break
+        }
+    }
     
     private let secondStackView: UIStackView = {
         let stackView = UIStackView()
@@ -126,18 +175,27 @@ class MainViewController: UIViewController {
     
     private let numberLabel: UILabel = {
         let label = UILabel()
-        label.text = "2"
+        label.text = "1"
         label.textColor = UIColor(rgb: 0x00B06B)
         label.font = .systemFont(ofSize: 35)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let stepper: UIStepper = {
+    private lazy var stepper: UIStepper = {
         let stepper = UIStepper()
+        stepper.maximumValue = 1
+        stepper.maximumValue = 10
         stepper.translatesAutoresizingMaskIntoConstraints = false
+        stepper.addTarget(self, action: #selector(stepperTouch), for: .touchUpInside)
         return stepper
     }()
+    
+    @objc func stepperTouch() {
+        print("+1")
+        
+    }
+    
 }
 
 extension MainViewController {
@@ -189,7 +247,7 @@ extension MainViewController {
             secondStackView.leadingAnchor.constraint(equalTo: greenView.leadingAnchor, constant: 16),
             secondStackView.trailingAnchor.constraint(equalTo: greenView.trailingAnchor,  constant: -16),
             secondStackView.heightAnchor.constraint(equalToConstant: 70),
-        
+            
             calculateButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             calculateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             calculateButton.heightAnchor.constraint(equalToConstant: 54),
@@ -198,15 +256,21 @@ extension MainViewController {
         ])
         
         NSLayoutConstraint.activate([
-            buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            buttonTwo.widthAnchor.constraint(equalToConstant: 80),
+//            buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            buttonTwo.widthAnchor.constraint(equalToConstant: buttonTwo.intrinsicContentSize.width),
             buttonTwo.heightAnchor.constraint(equalToConstant: 40),
-            ])
+        
+            buttonOne.widthAnchor.constraint(equalToConstant: buttonOne.intrinsicContentSize.width),
+            buttonOne.heightAnchor.constraint(equalToConstant: 40),
+            
+            buttonThree.widthAnchor.constraint(equalToConstant: buttonThree.intrinsicContentSize.width),
+            buttonThree.heightAnchor.constraint(equalToConstant: 40),
+        ])
         
         NSLayoutConstraint.activate([
             numberLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 110),
             stepper.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -80),
-//            stepper.heightAnchor.constraint(equalToConstant: 40)
-            ])
+            //            stepper.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 }

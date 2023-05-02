@@ -24,3 +24,9 @@ extension UIColor {
        )
    }
 }
+
+
+enum Color {
+    static let green = UIColor(rgb: 0x00B06B)
+    
+}
