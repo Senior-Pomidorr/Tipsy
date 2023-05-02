@@ -43,17 +43,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     @objc func pushCalcuteButton() {
         let labelScore = textField.text!
+        let secondVc = SecondViewController()
         if !labelScore.isEmpty {
             calculateScore = Double(labelScore)!
             let result = calculateScore * tip / Double(numberOfPeople)
             finalResult = String(format: "%.2f", result)
+            secondVc.scoreLabel.text = finalResult
+            secondVc.discription.text = "Split between \(numberOfPeople) people, with \(tip * 100)% tip."
+            navigationController?.present(secondVc, animated: true)
+        } else {
+            secondVc.scoreLabel.text = "0"
+            navigationController?.present(secondVc, animated: true)
+            secondVc.discription.text = "Split between 1 people, with 10% tip."
         }
-        
-        
-        let secondVc = SecondViewController()
-        secondVc.scoreLabel.text = finalResult
-        secondVc.discription.text = "Split between \(numberOfPeople) people, with \(tip * 100)% tip."
-        navigationController?.present(secondVc, animated: true)
     }
     
     private let discription: UILabel = {
@@ -140,7 +142,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }()
     
     @objc func buttonCalculate(_ sender: UIButton) {
-            sender.isEnabled = false
+        sender.isEnabled = false
         textField.endEditing(true)
         switch sender {
         case buttonOne:
@@ -153,7 +155,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             buttonThree.backgroundColor = .clear
             buttonThree.setTitleColor(Color.green, for: .normal)
             tip = 0.0
-            print("press button")
         case buttonTwo:
             buttonOne.isEnabled = true
             buttonThree.isEnabled = true
@@ -164,7 +165,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             buttonThree.backgroundColor = .clear
             buttonThree.setTitleColor(Color.green, for: .normal)
             tip = 0.10
-            print("press button two")
         case buttonThree:
             buttonOne.isEnabled = true
             buttonTwo.isEnabled = true
@@ -175,7 +175,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             buttonTwo.backgroundColor = .clear
             buttonTwo.setTitleColor(Color.green, for: .normal)
             tip = 0.20
-            print("press button three")
         default:
             break
         }
@@ -223,7 +222,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let allowedCharacters = CharacterSet(charactersIn: "0123456789.").union(.whitespaces)
         let characterSet = CharacterSet(charactersIn: string)
         return allowedCharacters.isSuperset(of: characterSet)
-       }
+    }
 }
 
 
@@ -286,10 +285,10 @@ extension MainViewController {
         ])
         
         NSLayoutConstraint.activate([
-//            buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            //            buttonTwo.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             buttonTwo.widthAnchor.constraint(equalToConstant: buttonTwo.intrinsicContentSize.width),
             buttonTwo.heightAnchor.constraint(equalToConstant: 40),
-        
+            
             buttonOne.widthAnchor.constraint(equalToConstant: buttonOne.intrinsicContentSize.width),
             buttonOne.heightAnchor.constraint(equalToConstant: 40),
             
@@ -300,7 +299,6 @@ extension MainViewController {
         NSLayoutConstraint.activate([
             numberLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 110),
             stepper.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -80),
-            //            stepper.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }

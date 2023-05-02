@@ -50,7 +50,7 @@ class SecondViewController: UIViewController {
     let scoreLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
-        label.textColor = UIColor(rgb: 0x00B06B)
+        label.textColor = Color.green
         label.font = .boldSystemFont(ofSize: 70)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -58,7 +58,6 @@ class SecondViewController: UIViewController {
     
     let discription: UILabel = {
         let label = UILabel()
-        label.text = "Split between 2 people, with 10% tip."
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 25)
         label.textAlignment = .center
