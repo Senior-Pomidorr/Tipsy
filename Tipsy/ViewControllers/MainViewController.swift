@@ -7,14 +7,18 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITextFieldDelegate {
     
     var labelNumber = 0
     var numberOfPeople = 1
+    var tip = 0.10
+    var calculateScore = 0.0
+    var finalResult = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        textField.delegate = self
         layout()
     }
     
@@ -38,7 +42,17 @@ class MainViewController: UIViewController {
     }()
     
     @objc func pushCalcuteButton() {
+        let labelScore = textField.text!
+        if !labelScore.isEmpty {
+            calculateScore = Double(labelScore)!
+            let result = calculateScore * tip / Double(numberOfPeople)
+            finalResult = String(format: "%.2f", result)
+        }
+        
+        
         let secondVc = SecondViewController()
+        secondVc.scoreLabel.text = finalResult
+        secondVc.discription.text = "Split between \(numberOfPeople) people, with \(tip * 100)% tip."
         navigationController?.present(secondVc, animated: true)
     }
     
@@ -126,38 +140,41 @@ class MainViewController: UIViewController {
     }()
     
     @objc func buttonCalculate(_ sender: UIButton) {
-            sender.isEnabled = false // Disable the clicked button
-           // Enable the other buttons
+            sender.isEnabled = false
+        textField.endEditing(true)
         switch sender {
         case buttonOne:
             buttonTwo.isEnabled = true
             buttonThree.isEnabled = true
-            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.backgroundColor = Color.green
             sender.setTitleColor(.white, for: .normal)
             buttonTwo.backgroundColor = .clear
             buttonTwo.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
             buttonThree.backgroundColor = .clear
             buttonThree.setTitleColor(Color.green, for: .normal)
+            tip = 0.0
             print("press button")
         case buttonTwo:
             buttonOne.isEnabled = true
             buttonThree.isEnabled = true
-            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.backgroundColor = Color.green
             sender.setTitleColor(.white, for: .normal)
             buttonOne.backgroundColor = .clear
             buttonOne.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
             buttonThree.backgroundColor = .clear
             buttonThree.setTitleColor(Color.green, for: .normal)
+            tip = 0.10
             print("press button two")
         case buttonThree:
             buttonOne.isEnabled = true
             buttonTwo.isEnabled = true
-            sender.backgroundColor = UIColor(rgb: 0x00B06B)
+            sender.backgroundColor = Color.green
             sender.setTitleColor(.white, for: .normal)
             buttonOne.backgroundColor = .clear
             buttonOne.setTitleColor(UIColor(rgb: 0x00B06B), for: .normal)
             buttonTwo.backgroundColor = .clear
             buttonTwo.setTitleColor(Color.green, for: .normal)
+            tip = 0.20
             print("press button three")
         default:
             break
@@ -173,7 +190,7 @@ class MainViewController: UIViewController {
         return stackView
     }()
     
-    private let numberLabel: UILabel = {
+    private lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
         label.textColor = UIColor(rgb: 0x00B06B)
@@ -184,19 +201,32 @@ class MainViewController: UIViewController {
     
     private lazy var stepper: UIStepper = {
         let stepper = UIStepper()
-        stepper.maximumValue = 1
+        stepper.minimumValue = 1
         stepper.maximumValue = 10
         stepper.translatesAutoresizingMaskIntoConstraints = false
         stepper.addTarget(self, action: #selector(stepperTouch), for: .touchUpInside)
         return stepper
     }()
     
-    @objc func stepperTouch() {
-        print("+1")
-        
+    @objc func stepperTouch() -> Int {
+        numberOfPeople = Int(stepper.value)
+        print(numberOfPeople)
+        numberLabel.text = String(numberOfPeople)
+        return numberOfPeople
     }
     
+    
+    
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = CharacterSet(charactersIn: "0123456789.").union(.whitespaces)
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+       }
 }
+
+
 
 extension MainViewController {
     func layout() {
@@ -274,3 +304,5 @@ extension MainViewController {
         ])
     }
 }
+
+

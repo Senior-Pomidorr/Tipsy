@@ -47,7 +47,7 @@ class SecondViewController: UIViewController {
         return label
     }()
     
-    private let scoreLabel: UILabel = {
+    let scoreLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
         label.textColor = UIColor(rgb: 0x00B06B)
@@ -56,7 +56,7 @@ class SecondViewController: UIViewController {
         return label
     }()
     
-    private let discription: UILabel = {
+    let discription: UILabel = {
         let label = UILabel()
         label.text = "Split between 2 people, with 10% tip."
         label.textColor = .lightGray
